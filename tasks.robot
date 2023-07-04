@@ -166,12 +166,12 @@ Fetch Market News and Sentiment
     IF    "${market_news_inputs}[time_from]" != ""
         ${time_from}=    Convert Date    ${market_news_inputs}[time_from]     %Y%m%dT%H%M
     ELSE
-        ${time_from}=    ${market_news_inputs}[time_from]
+        ${time_from}=   Set Variable     ${market_news_inputs}[time_from]
     END
     IF    "${market_news_inputs}[time_to]" != ""
         ${time_to}=    Convert Date    ${market_news_inputs}[time_to]     %Y%m%dT%H%M
     ELSE
-        ${time_to}=    ${market_news_inputs}[time_to] 
+        ${time_to}=    Set Variable    ${market_news_inputs}[time_to] 
     END
 
     ${url}    Set Variable    https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${market_news_inputs.tag_symbols}&time_from=${time_from}&time_to=${time_to}&sort=${market_news_inputs.sorting_order}&topics=${topics_string}&apikey=${secret}[alphavantage_api_key]
@@ -189,7 +189,7 @@ Market News Result
         Add Next Ui Button    Back    Back To Main menu
         FOR    ${article}    IN    @{json_data['feed']}
             ${parsed_date}    Convert Date    ${article['time_published']}    %Y-%m-%d %H:%M
-            Add Heading    Title: ${article['title']}    size=medium
+            Add Heading    ${article['title']}    size=medium
             Add Text    Source: ${article['source']}    size=large
             Add Text    Published: ${parsed_date}    size=large
             Add Text    Summary: ${article['summary']}    size=large
